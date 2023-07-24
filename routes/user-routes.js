@@ -16,7 +16,7 @@ Router.route('/auth/signOut')
 Router.route('/verify/:uniqueString') //RECIBE EL LINK DE USUARIO
 .get(verifyEmail) //LLAMA A FUNCION DE VERIFICACIION
 
-// Router.route('/auth/signInToken')
-// .get(passport.authenticate('jwt',{ session: false }),verificarToken
-// )
+Router.route('/auth/signInToken')
+.get(passport.authenticate('jwt',{ session: false }),verificarToken
+)
 module.exports = Router

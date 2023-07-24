@@ -22,9 +22,8 @@ const sendEmail = async (email, uniqueString) => { //FUNCION ENCARGADA DE ENVIAR
     const transporter = nodemailer.createTransport({ //DEFINIMOS EL TRASPORTE UTILIZANDO NODEMAILER
         service: "gmail",
         auth: {
-            user: "useremailverifymindhub@gmail.com",    //DEFINIMOS LOS DATOS DE AUTORIZACION DE NUESTRO PROVEEDOR DE
+            user: "useremailverify@gmail.com",    //DEFINIMOS LOS DATOS DE AUTORIZACION DE NUESTRO PROVEEDOR DE
             type: "OAuth2",
-            user: "useremailverifymindhub@gmail.com",
             clientId: process.env.GOOGLE_CLIENTID,
             clientSecret: process.env.GOOGLE_CLIENTSECRET,
             refreshToken: process.env.GOOGLE_REFRESHTOKEN,
@@ -36,11 +35,11 @@ const sendEmail = async (email, uniqueString) => { //FUNCION ENCARGADA DE ENVIAR
     })
 
     // EN ESTA SECCION LOS PARAMETROS DEL MAIL 
-    let sender = "useremailverifymindhub@gmail.com"
+    let sender = "useremailverif@gmail.com"
     let mailOptions = {
         from: sender,    //DE QUIEN
         to: email,       //A QUIEN
-        subject: "Verificacion de email usuario ", //EL ASUNTO Y EN HTML EL TEMPLATE PARA EL CUERPO DE EMAIL Y EL LINK DE VERIFICACION
+        subject: "User email verification ", //EL ASUNTO Y EN HTML EL TEMPLATE PARA EL CUERPO DE EMAIL Y EL LINK DE VERIFICACION
         html: `
         <div >
         <h1 style="color:red">We welcome you to MyTinerary, the perfect place to find your next adventure, to continue with the registration click on the following link to verify your email <a href=http://localhost:3000/${uniqueString}></a> </h1>
@@ -85,9 +84,8 @@ const usersControllers = {
             const userExist = await User.findOne({ email }) //BUSCAR SI EL USUARIO YA EXISTE EN DB
 
             if (userExist) {
-                // console.log(userExist.from.indexOf(from))
                 if (userExist.from.indexOf(from) !== -1) {
-                    //console.log("resultado de if " +(userExist.from.indexOf(from) !==0 )) //INDEXOF = 0 EL VALOR EXISTE EN EL INDICE EQ A TRUE -1 NO EXITE EQ A FALSE
+                     //INDEXOF = 0 EL VALOR EXISTE EN EL INDICE EQ A TRUE -1 NO EXITE EQ A FALSE
                     res.json({
                         success: false,
                         from: "signup",
@@ -107,7 +105,7 @@ const usersControllers = {
                         res.json({
                             success: true,
                             from: "signup",
-                            message: "We send you an email to validate it, please check your box to complete the signUp and add it to your SignIN methods, if you can't find the verification message, check the spam box."
+                            message: "We send you an email to validate it, please check its box to complete the registration and add it to your login methods, if you can't find the verification message, please check the spam box."
                         })
 
                     } else {
@@ -149,13 +147,13 @@ const usersControllers = {
 
                 } else {
                     //PASAR EMAIL VERIFICADO A FALSE
-                    //ENVIARLE EL E MAIL PARA VERIFICAR
+                    //ENVIARLE EL EMAIL PARA VERIFICAR
                     await nuevoUsuario.save()
                     await sendEmail(email, nuevoUsuario.uniqueString) //LLAMA A LA FUNCION ENCARGADA DEL ENVIO DEL CORREO ELECTRONICO
 
                     res.json({
                         success: true,
-                        from: "siggup",
+                        from: "signup",
                         message: "We send you an email to validate it, please check your box to complete the signUp. "
                     }) // AGREGAMOS MENSAJE DE VERIFICACION
                 }
